@@ -317,14 +317,6 @@ export class PlayerSearchComponent {
 
   // Load initial data such as favourites, recent games, search history and annotated games when the component initializes
   async ngOnInit() {
-    // Wake up the backend
-    await fetch('https://6yx23nw3i8.execute-api.eu-west-1.amazonaws.com/wake', {
-      method: 'POST'
-    });
-
-    // Give EC2 time to boot
-    await new Promise(r => setTimeout(r, 10000));
-
     this.loadFavourites();
     this.loadRecent();
     this.loadSearchHistory();
