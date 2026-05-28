@@ -3,7 +3,6 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
 import "./db/conn.js";
-import { connectDB } from "./db/conn.js";
 import playersRoutes from "./routes/players.js";
 import favouritesRoutes from "./routes/favourites.js";
 import recentRoutes from "./routes/recent.js";
@@ -210,8 +209,6 @@ app.get('/api/players/search/:query', async (req, res) => {
     res.status(500).json({ error: 'Search failed' });
   }
 });
-
-connectDB();
 
 app.listen(PORT, () => {
   console.log(`API running on http://localhost:${PORT}`);
