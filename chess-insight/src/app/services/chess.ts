@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ChessService {
 
   // Base URL for the backend API
-  private baseUrl = 'http://52.18.58.231:3000';
+  private baseUrl = 'https://chessinsight-u8rf.onrender.com';
   private apiBase = `${this.baseUrl}/api`;
   private dbBase = `${this.baseUrl}/db`;
   // private apiBase = 'http://localhost:3000/api';
