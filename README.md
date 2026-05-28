@@ -18,7 +18,7 @@ The application integrates with the Chess.com public API to allow users to searc
 
 The project was designed to demonstrate full-stack web development, REST API integration, state management, third-party library integration, and cloud deployment using modern technologies (Originally AWS).
 
-![Homepage](Screenshots/01.Homepage.png)
+![Homepage](Screenshots/05.MoveAnnotations.png)
 
 ---
 
