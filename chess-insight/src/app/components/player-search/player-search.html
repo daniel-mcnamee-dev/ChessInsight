@@ -1,0 +1,409 @@
+<div class="container">
+
+<div class="layout">
+
+  <!-- Player Search/Info -->
+  <div class="player-panel">
+  @if (!replayMode()) {
+    <h2>Chess Player Search</h2>
+
+    <!-- Search Input -->
+    <div class="search-container">
+    <input
+      [ngModel]="username()"
+      (ngModelChange)="onUsernameChange($event)"
+      (focus)="suggestions.set(searchHistory())"
+      (keyup.enter)="search()"
+      placeholder="Enter Chess.com username"
+    >
+    <button (click)="search()">Search</button>
+
+    <!-- Suggestions Dropdown -->
+    @if (suggestions().length > 0) {
+      <div class="suggestions">
+
+        @for (player of suggestions(); track player) {
+
+          <div
+            class="suggestion-item"
+            (click)="selectSuggestion(player)"
+          >
+            {{ player }}
+          </div>
+        }
+      </div>
+    }
+    </div>
+
+    <!-- Error Message -->
+    @if (error()) {
+      <div class="error">
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Player Info -->
+    @if (player()) {
+      <div class="player-card">
+        <h3>
+          {{ player().username }}
+          @if (player().title) { ({{ player().title }}) }
+        </h3>
+
+        @if (player().avatar) {
+          <img [src]="player().avatar" class="player-avatar">
+        }
+
+        <p>Name: {{ player().name || 'N/A' }}</p>
+        <p>Country: {{ player().country }}</p>
+
+        @if (stats()) {
+          <div class="stats">
+            <h4>Ratings</h4>
+            <p>Blitz: {{ stats().blitz }}</p>
+            <p>Rapid: {{ stats().rapid }}</p>
+            <p>Bullet: {{ stats().bullet }}</p>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- Game Details -->
+  @if (replayMode() && selectedGame()) {
+    <div class="game-details">
+
+      <h3>Game Details</h3>
+
+      <!-- Players Info -->
+      <div class="players-row">
+        <div class="player-box white-box">
+          <h4>White</h4>
+          <p class="player-name">{{ selectedGame().white }}</p>
+          <p>Rating: {{ selectedGame().whiteRating }}</p>
+          <p>Result: {{ selectedGame().whiteResult }}</p>
+        </div>
+
+        <div class="player-box black-box">
+          <h4>Black</h4>
+          <p class="player-name">{{ selectedGame().black }}</p>
+          <p>Rating: {{ selectedGame().blackRating }}</p>
+          <p>Result: {{ selectedGame().blackResult }}</p>
+        </div>
+      </div>
+
+      <!-- Game Metadata -->
+      <div class="game-meta">
+        <p><strong>Opening:</strong> {{ selectedGame().opening }}</p>
+        <p><strong>Date:</strong> {{ selectedGame().date * 1000 | date:'dd MMM yyyy' }}</p>
+        <p><strong>Time Control:</strong> {{ selectedGame().timeClass }}</p>
+      </div>
+
+    </div>
+  }
+
+  </div>
+
+  <!-- Games List -->
+  <div class="games-panel">
+
+    <!-- Non-Replay Mode: Show game list and filters -->
+    @if (!replayMode()) {
+
+      <!-- Archive Selection Dropdown -->
+      @if (archives().length > 0) {
+        <div class="archive-select">
+          <label>Select Month: </label>
+          <select (change)="onArchiveChange($event)">
+            @for (archive of archives(); track archive.url) {
+              <option
+                [value]="archive.url"
+                [selected]="archive.url === selectedArchive()?.url"
+              >
+                {{ archive.label }}
+              </option>
+            }
+          </select>
+        </div>
+      }
+
+      <!-- Games List Header with Filters and Tabs -->
+      @if (games().length > 0 || loadingGames() || noGames()) {
+        <h3>Games</h3>
+        <div class="top-bar">
+          <!-- Filters -->
+          <div class="filters">
+            <button
+              (click)="setFilter('all')"
+              [class.active]="gameFilter() === 'all'">
+              All
+            </button>
+
+            <button
+              (click)="setFilter('blitz')"
+              [class.active]="gameFilter() === 'blitz'">
+              Blitz
+            </button>
+
+            <button
+              (click)="setFilter('rapid')"
+              [class.active]="gameFilter() === 'rapid'">
+              Rapid
+            </button>
+
+            <button
+              (click)="setFilter('bullet')"
+              [class.active]="gameFilter() === 'bullet'">
+              Bullet
+            </button>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tabs">
+            <button
+              (click)="setTab('games')"
+              [class.active]="activeTab() === 'games'">
+              Games
+            </button>
+
+            <button
+              (click)="setTab('favourites')"
+              [class.active]="activeTab() === 'favourites'">
+              Favourite Games
+            </button>
+
+            <button
+              (click)="setTab('recent')"
+              [class.active]="activeTab() === 'recent'">
+              Recently Viewed
+            </button>
+
+            <button
+              (click)="setTab('annotated')"
+              [class.active]="activeTab() === 'annotated'">
+              Annotated Games
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Loading Indicator -->
+        @if (loadingGames()) {
+          <div class="loading-box">
+            Loading games...
+          </div>
+        }
+
+        <!-- No Games Message -->
+        @if (!loadingGames() && noGames()) {
+          <div class="loading-box">
+            No games available for this month
+          </div>
+        }
+
+        <!-- GAMES TAB -->
+        @if (activeTab() === 'games') {
+          <div class="games-list">
+            @for (game of pagedList(); track game) {
+              <div
+                class="game-item normal"
+                [class.selected]="selectedGame() === game"
+                (click)="selectGame(game)"
+              >
+                <span class="white">(W) {{ game.white }}</span>
+                <span class="vs">vs</span>
+                <span class="black">{{ game.black }} (B)</span>
+
+                <span
+                  class="result"
+                  [class.win]="game.result === 'Win'"
+                  [class.loss]="game.result === 'Loss'"
+                  [class.draw]="game.result === 'Draw'"
+                >
+                  {{ game.result }}
+                </span>
+
+                <!-- Favourite Button -->
+                <button
+                  class="star-button"
+                  [class.favourited]="isFavourite(game)"
+                  (click)="toggleFavourite(game); $event.stopPropagation()"
+                >
+                  ★
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- FAVOURITE GAMES TAB -->
+        @if (activeTab() === 'favourites') {
+          <div class="games-list">
+            @for (game of pagedList(); track game) {
+              <div
+                class="game-item normal"
+                [class.selected]="selectedGame() === game"
+                (click)="selectGame(game)"
+              >
+                <span class="white">(W) {{ game.white }}</span>
+                <span class="vs">vs</span>
+                <span class="black">{{ game.black }} (B)</span>
+
+                <!-- Result -->
+                <span
+                  class="result"
+                  [class.win]="game.whiteResult === 'Win'"
+                  [class.loss]="game.blackResult === 'Win'"
+                  [class.draw]="game.whiteResult === 'Draw'"
+                >
+                  @if (game.whiteResult === 'Win') {
+                    Winner White
+                  }
+                  @else if (game.blackResult === 'Win') {
+                    Winner Black
+                  }
+                  @else {
+                    Draw
+                  }
+                </span>
+
+                <!-- Favourite Button -->
+                <button
+                  class="star-button favourited"
+                  (click)="toggleFavourite(game); $event.stopPropagation()"
+                >
+                  ★
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Recently Viewed Games Tab -->
+        @if (activeTab() === 'recent') {
+          <div class="games-list">
+            @for (game of pagedList(); track game) {
+              <div
+                class="game-item normal"
+                (click)="selectGame(game)"
+              >
+                <span class="white">(W) {{ game.white }}</span>
+                <span class="vs">vs</span>
+                <span class="black">{{ game.black }} (B)</span>
+
+                <!-- Result -->
+                <span
+                  class="result"
+                  [class.win]="game.whiteResult === 'Win'"
+                  [class.loss]="game.blackResult === 'Win'"
+                  [class.draw]="game.whiteResult === 'Draw'"
+                >
+                  @if (game.whiteResult === 'Win') {
+                    Winner White
+                  }
+                  @else if (game.blackResult === 'Win') {
+                    Winner Black
+                  }
+                  @else {
+                    Draw
+                  }
+                </span>
+
+                <!-- Favourite Button -->
+                <button
+                  class="star-button"
+                  [class.favourited]="isFavourite(game)"
+                  (click)="toggleFavourite(game); $event.stopPropagation()"
+                >
+                  ★
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Annotated Games Tab -->
+        @if (activeTab() === 'annotated') {
+          <div class="games-list">
+            @for (game of pagedList(); track game) {
+              <div
+                class="game-item annotated"
+                (click)="selectGame(game)"
+              >
+                <span class="white">(W) {{ game.white }}</span>
+                <span class="vs">vs</span>
+                <span class="black">{{ game.black }} (B)</span>
+
+                <span class="annotated-badge">Annotated</span>
+                <span
+                  class="result"
+                  [class.win]="game.whiteResult === 'Win'"
+                  [class.loss]="game.blackResult === 'Win'"
+                  [class.draw]="game.whiteResult === 'Draw'"
+                >
+                  @if (game.whiteResult === 'Win') {
+                    Winner White
+                  }
+                  @else if (game.blackResult === 'Win') {
+                    Winner Black
+                  }
+                  @else {
+                    Draw
+                  }
+                </span>
+
+                <!-- Favourite Button -->
+                <button
+                  class="star-button"
+                  [class.favourited]="isFavourite(game)"
+                  (click)="toggleFavourite(game); $event.stopPropagation()"
+                >
+                  ★
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Replay button -->
+        @if (selectedGame()) {
+          <button class="button-primary" (click)="startReplay()" style="margin-top: 10px;">
+            Replay Game
+          </button>
+        }
+
+        <!-- Pagination -->
+        @if (activeTab() !== 'recent') {
+          <div class="pagination">
+            <button (click)="prevPage()" [disabled]="currentPage() === 1">
+              Previous
+            </button>
+
+            <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+
+            <button
+              (click)="nextPage()"
+              [disabled]="currentPage() * gamesPerPage >= currentListLength()">
+              Next
+            </button>
+          </div>
+        }
+        }
+      }
+
+      <!-- Replay Mode -->
+      @if (replayMode()) {
+        <!-- Back Button -->
+        <button class="app-button back-button" (click)="exitReplay()">
+          ← Back to Games
+        </button>
+        <!-- Game Viewer Component to display the chess board and moves -->
+        <app-game-viewer
+          [game]="selectedGame()"
+          [playerUsername]="player()?.username">
+        </app-game-viewer>
+      }
+
+    </div>
+  </div>
+</div>

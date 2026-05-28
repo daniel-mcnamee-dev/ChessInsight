@@ -1,0 +1,75 @@
+<div class="viewer-container">
+
+  <div class="viewer">
+
+    <!-- Board -->
+    <div class="board-wrapper">
+
+      <div class="board-container">
+        <chess-board
+          #board
+          [attr.position]="currentFen()"
+          [attr.orientation]="orientation()"
+          style="width: 600px;">
+        </chess-board>
+      </div>
+
+      <div class="controls">
+        <button class="button-primary" (click)="goToStart()">⏮</button>
+        <button class="button-primary" (click)="prevMove()">◀</button>
+        <button class="button-primary" (click)="nextMove()">▶</button>
+        <button class="button-primary" (click)="goToEnd()">⏭</button>
+        <button class="app-button" (click)="toggleOrientation()">⇄</button>
+      </div>
+
+    </div>
+
+    <!-- Moves List -->
+    <div class="moves">
+
+      <div class="moves-header">
+        <div class="moves-title">Moves</div>
+        <div class="notes-title">Notes</div>
+      </div>
+
+      <!-- Move Rows -->
+      @for (pair of movePairs(); track $index; let i = $index) {
+        <div class="move-row" #moveRow>
+
+          <!-- Move Cell -->
+          <div class="moves-cell">
+            <span class="move-number">{{ i + 1 }}.</span>
+
+            <span
+              class="move"
+              (click)="selectMove(i * 2)"
+              [class.active]="moveIndex() === i * 2 + 1"
+            >
+              {{ pair.white }}
+            </span>
+
+            @if (pair.black) {
+              <span
+                class="move"
+                (click)="selectMove(i * 2 + 1)"
+                [class.active]="moveIndex() === i * 2 + 2"
+              >
+                {{ pair.black }}
+              </span>
+            }
+          </div>
+
+          <!-- Note Cell -->
+          <div
+            class="note-cell"
+            contenteditable="true"
+            (input)="updateNote(i + 1, $event)"
+            (blur)="saveNote(i + 1)"
+            #noteCell
+          ></div>
+
+        </div>
+      }
+    </div>
+  </div>
+</div>

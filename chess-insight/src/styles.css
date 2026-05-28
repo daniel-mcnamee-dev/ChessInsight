@@ -1,0 +1,88 @@
+/* Global CSS variables and styles for the Chess Insight application */
+
+/* Color palette for the application, inspired by popular chess platforms and dark themes */
+:root { 
+  --bg-main: #1e1e1e;
+  --bg-panel: #2a2a2a;
+  --bg-card: #333333;
+
+  --border: #444;
+
+  --accent: #7fa650;
+  --accent-secondary: #b58863;
+
+  --text-main: #eaeaea;
+  --text-muted: #aaaaaa;
+
+  --danger: #c94c4c;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
+  margin: 0;
+}
+
+/* App header styling with dark background and chess.com green title */
+.app-header {
+  height: 70px;
+  background: #1b1b1b;
+  border-bottom: 1px solid #444;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+}
+
+.app-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7fa650;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.app-title:hover {
+  color: #95c96b;
+}
+
+/* Reusable card component for consistent styling */
+.card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* buttons */
+.app-button {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  font-size: 16px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.app-button:hover {
+  background: #3a3a3a;
+}
+
+/* move list styling for game viewer page */
+.moves-header {
+  border-bottom: 2px solid var(--border);
+}
+
+.move-row {
+  border-bottom: 1px solid var(--border);
+}
+
+.note-cell {
+  border-left: 1px solid var(--border);
+}
+
+.active {
+  font-weight: bold;
+  color: var(--accent);
+}

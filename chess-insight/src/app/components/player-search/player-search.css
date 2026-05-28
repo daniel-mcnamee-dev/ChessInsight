@@ -1,0 +1,492 @@
+/* =========================
+   GENERAL PAGE SECTIONS
+   ========================= */ 
+
+/* Container for games section */
+.games {
+  margin-top: 20px;
+}
+
+/* Main page layout:
+   Left = player panel
+   Right = games panel */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 40px;
+  padding: 30px;
+  align-items: start;
+}
+
+
+/* =========================
+   PLAYER PANEL (LEFT SIDE)
+   ========================= */
+
+/* Player info panel containing search, avatar, stats */
+.player-panel {
+  width: 420px;
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+/* Username search input */
+.player-panel input {
+  font-size: 16px;
+  padding: 8px 10px;
+  width: 220px;
+}
+
+/* Search / action buttons */
+.player-panel button {
+  font-size: 16px;
+  padding: 8px 14px;
+  margin-left: 6px;
+}
+
+/* Player avatar image */
+.player-avatar {
+  width: 150px;
+  margin: 12px 0;
+}
+
+/* Player name heading */
+.player-panel h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+/* Section headings */
+.player-panel h3 {
+  font-size: 24px;
+}
+
+/* Sub headings */
+.player-panel h4 {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+
+/* =========================
+   GAMES PANEL (RIGHT SIDE)
+   ========================= */
+
+/* Container for games list and controls */
+.games-panel {
+  flex: 1;
+  min-width: 600px;
+}
+
+/* Scrollable list of games */
+.games-list {
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--bg-card);
+}
+
+
+/* =========================
+   GAME LIST ITEMS
+   ========================= */
+
+/* Base game row styling */
+.game-item {
+  display: grid;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Layout for normal games */
+.game-item.normal {
+  grid-template-columns: 1fr 60px 1fr 160px 40px;
+}
+
+/* Layout for annotated games (extra column for badge/info) */
+.game-item.annotated {
+  grid-template-columns: 1fr 60px 1fr 120px 120px 40px;
+}
+
+/* Hover effect for game rows */
+.game-item:hover {
+  background: #292929;
+}
+
+/* Selected game highlight */
+.game-item.selected {
+  background: #2e2e2e;
+  border-left: 3px solid var(--accent);
+}
+
+
+/* =========================
+   PLAYER NAME COLUMNS
+   ========================= */
+
+.white {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.vs {
+  text-align: center;
+  color: #777;
+}
+
+.black {
+  text-align: left;
+  padding-left: 10px;
+}
+
+
+/* =========================
+   RESULT / BADGES / STAR
+   ========================= */
+
+/* Center result and annotated badge */
+.result,
+.annotated-badge {
+  justify-self: center;
+}
+
+/* Star favourite button alignment */
+.star-button {
+  justify-self: end;
+}
+
+/* Game result text */
+.result {
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Result colours */
+.result.win {
+  color: #2e7d32;
+}
+
+.result.loss {
+  color: #c62828;
+}
+
+.result.draw {
+  color: #616161;
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+/* General app buttons */
+.button-primary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button-primary:hover {
+  background: #95c96b;
+}
+
+/* Back button spacing */
+.back-button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.back-button:hover {
+  background: #95c96b;
+}
+
+
+/* =========================
+   SEARCH SUGGESTIONS
+   ========================= */
+
+/* Suggestions dropdown box */
+.suggestions {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-top: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Individual suggestion item */
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* Hover effect for suggestions */
+.suggestion-item:hover {
+  background: #3a3a3a;
+}
+
+
+/* =========================
+   FILTERS & PAGINATION
+   ========================= */
+
+/* Game filters (Blitz, Rapid, etc.) */
+.filters {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+/* Pagination controls */
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Pagination buttons */
+.pagination button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: var(--text-main);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Hover effect for pagination buttons */
+.pagination button:hover {
+  background: #95c96b;
+}
+
+/* Disabled state for pagination buttons */
+.pagination button:disabled {
+  background: #3a3a3a;
+  border: 1px solid #3a3a3a;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination button:disabled:hover {
+  background: #3a3a3a;
+}
+
+/* =========================
+   LOADING STATE
+   ========================= */
+
+/* Loading message container */
+.loading-box {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+
+/* =========================
+   GAME INFO ROW
+   ========================= */
+
+/* Small info row inside game item */
+.game-info {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+
+/* =========================
+   FAVOURITE STAR BUTTON
+   ========================= */
+
+/* Star button base styling */
+.star-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #bbb;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* Highlighted when game is favourited */
+.star-button.favourited {
+  color: gold;
+}
+
+/* Hover animation */
+.star-button:hover {
+  transform: scale(1.6);
+}
+
+
+/* =========================
+   TABS
+   ========================= */
+
+/* Tabs container */
+.tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tab buttons */
+.tabs button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+/* Hover */
+.tabs button:hover {
+  color: var(--text-main);
+}
+
+/* Active tab */
+.tabs button.active {
+  color: var(--text-main);
+  border-bottom: 3px solid var(--accent);
+}
+
+/* Top bar containing filters and tabs */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* =========================
+  FILTERS
+   ========================= */
+
+/* Container for time control filters */
+.filters {
+  display: flex;
+  gap: 6px;
+}
+
+/* Filter buttons */
+.filters button {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Hover */
+.filters button:hover {
+  border-color: var(--accent);
+}
+
+/* Active filter */
+.filters button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* =========================
+   GAME DETAILS PANEL
+   ========================= */
+
+/* Game details box under the list */
+.game-details {
+  background: var(--bg-panel);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 45px;
+  margin-right: 20px;
+  border: 1px solid var(--border);
+}
+
+/* Row containing white and black player boxes */
+.players-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Individual player info box */
+.player-box {
+  flex: 1;
+  min-width: 145px;   /* prevents squishing */
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* White player styling */
+.white-box {
+  background: linear-gradient(145deg, #303030, #2a2a2a);
+  border-left: 4px solid #e6e6e6;
+}
+
+/* Black player styling */
+.black-box {
+  background: linear-gradient(145deg, #262626, #1f1f1f);
+  border-left: 4px solid #888;
+}
+
+/* Player info text */
+.player-box p {
+  font-size: 15px;
+  margin: 4px 0;
+}
+
+/* Player name styling */
+.player-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* Player result styling */
+.player-box p:last-child {
+  font-weight: 600;
+}
+
+.white-box p:last-child {
+  color: #81c784; /* win green */
+}
+
+.black-box p:last-child {
+  color: #e57373; /* loss red */
+}
+
+/* Game metadata section (date, opening, etc.) */
+.game-meta {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
+
+/* Badge showing game is annotated */
+.annotated-badge {
+  margin-left: 10px;
+  font-size: 12px;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 6px;
+  border-radius: 4px;
+}

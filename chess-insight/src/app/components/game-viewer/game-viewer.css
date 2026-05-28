@@ -1,0 +1,135 @@
+/* Main layout for the game viewer:
+   Left side = chessboard area
+   Right side = moves list and notes */ 
+.viewer {
+  display: grid;
+  grid-template-columns: 600px 400px;
+  gap: 30px;
+  align-items: start;
+  align-content: start; 
+}
+
+.viewer {
+  grid-auto-rows: min-content;
+}
+
+chess-board {
+  display: block;
+  height: 600px;
+}
+
+.board-container chess-board {
+  display: block;
+  height: 600px;
+  overflow: hidden;
+}
+
+/* Debug outlines for layout visualization - remove in production 
+.board-wrapper { outline: 2px solid red; }
+.board-container { outline: 2px solid blue; }
+.controls { outline: 2px solid green; }
+.viewer { outline: 2px solid yellow; }
+chess-board {
+  outline: 3px solid purple;
+}
+*/
+
+/* Wrapper around the chessboard.
+   Allows space for board controls (next, previous, reset, etc.)
+   and keeps them stacked vertically with spacing. */
+
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  align-self: start;
+}
+
+/* Navigation buttons for stepping through the game moves */
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.controls button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.controls button:hover {
+  background: #95c96b;
+}
+
+/* Container holding the move list and notes.
+   Fixed height with vertical scrolling so long games don't stretch the layout. */
+.moves {
+  height: 620px;
+  overflow-y: auto;
+  width: 400px;
+}
+
+/* Header row showing column titles (Moves / Notes).
+   Uses grid to align with move rows below. */
+.moves-header {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Each row representing a pair of moves and its note.
+   Grid layout keeps moves and notes aligned in columns. */
+.move-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border-bottom: 1px solid #eee;
+}
+
+/* Cell containing the actual move text (e.g. 1. e4 e5).
+   Flex layout spaces move number, white move, and black move. */
+.moves-cell {
+  display: flex;
+  gap: 12px;
+  padding: 4px 8px;
+}
+
+/* Editable notes cell for user annotations.
+   pre-wrap keeps line breaks when typing multiple lines. */
+.note-cell {
+  padding: 4px 8px;
+  border-left: 1px solid #eee;
+  min-height: 24px;
+  outline: none;
+  white-space: pre-wrap;
+}
+
+/* Placeholder text shown when a note cell is empty */
+.note-cell:empty::before {
+  content: "Add note...";
+  color: #aaa;
+}
+
+/* Individual move styling.
+   Clickable so users can jump to that move on the board. */
+.move {
+  cursor: pointer;
+}
+
+/* Visual feedback when hovering over a move */
+.move:hover {
+  text-decoration: underline;
+}
+
+/* Highlights the currently active move */
+.active {
+  font-weight: bold;
+  color: rgba(0, 255, 26, 0.8);
+}
